@@ -1,0 +1,6 @@
+select * from posts where posts.ViewCount > 1000000 ORDER BY posts.ViewCount DESC;
+select * from posts where posts.ViewCount <=1000000 and posts.ViewCount >130000 ORDER BY posts.ViewCount DESC;
+select * from posts where posts.ViewCount <=130000 and posts.ViewCount >76000 ORDER BY posts.ViewCount DESC;
+select * from posts where posts.ViewCount <=76000 and posts.ViewCount >54000 ORDER BY posts.ViewCount DESC;
+select * from posts where posts.ViewCount <=54000 and posts.ViewCount >42000 ORDER BY posts.ViewCount DESC;
+select top 3138* from posts where posts.ViewCount <=42000 ORDER BY posts.ViewCount DESC;
