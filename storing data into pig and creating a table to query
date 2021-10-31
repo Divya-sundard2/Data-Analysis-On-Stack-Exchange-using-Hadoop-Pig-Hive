@@ -1,4 +1,4 @@
-STORE data INTO 'output' USING org.apache.pig.piggybank.storage.CSVExcelStorage(',)
+STORE data INTO 'output' USING org.apache.pig.piggybank.storage.CSVExcelStorage(',);
 
 create table Final_Data1(Id int, Score int, ViewCount int, Body String, OwnerUserId int, OwnerDisplayName string, Title string, Tags string) ROW FORMAT DELIMITED
 FIELDS TERMINATED BY ',';
