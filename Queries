@@ -1,0 +1,8 @@
+//Top 10 posts by score
+Select OwnerUserId,score,title from Final_Data1 order by score desc limit 10;
+
+//Top 10 users by postscore
+Select sum(score) as total, OwnerUserId from Final_Data1 where OwnerUserId is NOT NULL group by OwnerUserId  order by total desc limit 10;
+
+//Number of distinct users who used the word cloud
+Select count(distinct OwnerUserId) from Final_Data1 where lower(Body) like ‘%cloud%’ or lower(title) like ‘%cloud%’;
