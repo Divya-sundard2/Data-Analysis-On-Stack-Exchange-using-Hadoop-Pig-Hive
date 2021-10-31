@@ -1,0 +1,16 @@
+add jar hivemall-core-0.4.2-rc.2-with-dependencies.jar;
+source define-all.hive;
+
+create temporary macro max2(a INT, b INT) if(a>b,a,b);
+
+create temporary macro tfidf(tf FLOAT, df_t INT, n_docs INT) tf * (log(10, CAST(n_docs as FLOAT)/max2(1,df_t)) + 1.0);
+create table usermodel as select owneruserid, sum(score) as TotalScore from Final_data1 f group by OwnerUserId order by TotalScore desc limit 10;
+create table usermodel1 as select d.OwnerUserID,title from Final_data1 d join usermodel t on  d.OwnerUserID = t.OwnerUserID;
+create view frequency as select ownerUserId, term from usermodel1 LATERAL VIEW explode(tokenize(Title, True)) t as term where not is_stopword(term);
+create view Finaldata1_view as select ownerUserid, term,freq from (select ownerUserId, tf(term) as word2freq from frequency group by ownerUserId) t LATERAL VIEW explode(word2freq) t2 as term ,freq
+create view Inverseterm as select term,count(distinct owneruserId) tid from frequency group by term;
+select count(owneruserid) from topUsersmodel1;
+set hivevar: n_docs=10;
+create or replace view tfidf as select tf.owneruserid,tf.term,tfidf(tf.freq,f.tid, ${n_docs}) as tfidf from Finaldata1_view f join Inverseterm im on (f.term=im.term) order by tfidf desc
+select t.owneruserid,t.term,t.tfidf_score as tf-idf from (select tfidf.owneruserid,inverse.term,inverse.tfidf,row_number() over (partition by owneruserId order by tfidf desc) as rank from tfidf) t where t.rank<=11;
+
